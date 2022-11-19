@@ -2,7 +2,7 @@ import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/node';
 import { getPost } from '~/models/post.server';
-import type { Post } from '~/models/post.server';
+import type { Post } from '~/models/post';
 import invariant from 'tiny-invariant';
 import { marked } from 'marked';
 import type { ApolloQueryResult } from '@apollo/client';

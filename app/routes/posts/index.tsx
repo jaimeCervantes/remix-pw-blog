@@ -1,17 +1,11 @@
-
 import { gql } from '@apollo/client';
-import type { ApolloQueryResult } from '@apollo/client';
 import { json } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { graphqlClient } from '~/apollo/index';
 
-type Post = {
-  slug: String;   
-  title: String;
-  content: String;
-  createdAt: String;
-  updatedAt: String;
-}
+import type { ApolloQueryResult } from '@apollo/client';
+import type { Post } from '~/models/post';
+
 
 type LoaderData = {
   posts: Array<Post>

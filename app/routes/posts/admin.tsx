@@ -1,22 +1,22 @@
-import type { Post } from "@prisma/client";
-import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData, Outlet } from "@remix-run/react";
-import type { ApolloQueryResult } from '@apollo/client';
-
 import { getPosts } from "~/models/post.server";
 
-type LoaderData = {
-  posts: Awaited<ReturnType<typeof getPosts>>;
-};
+import type { ApolloQueryResult } from '@apollo/client';
+import type { Post } from '~/models/post';
+import type { LoaderFunction } from "@remix-run/node";
+
+type LoaderData = Awaited<ReturnType<typeof getPosts>>
 
 export const loader: LoaderFunction = async () => {
-  const { data: { posts } }: ApolloQueryResult<{ posts: Array<Post> }> = await getPosts()
-  return json({ posts });
+  const result: ApolloQueryResult<{ posts: Array<Post> }> = await getPosts();
+  
+  return json(result);
 };
 
 export default function PostAdmin() {
-  const { posts } = useLoaderData<LoaderData>();
+  const { data: { posts } }  = useLoaderData<LoaderData>();
+
   return (
     <div className="mx-auto max-w-4xl">
       <h1 className="my-6 mb-2 border-b-2 text-center text-3xl">
@@ -25,7 +25,7 @@ export default function PostAdmin() {
       <div className="grid grid-cols-4 gap-6">
         <nav className="col-span-4 md:col-span-1">
           <ul>
-            {posts.map((post) => (
+            {posts.map((post: { slug: string, title: string }) => (
               <li key={post.slug}>
                 <Link
                   to={`/posts/${post.slug}`}
