@@ -35,7 +35,7 @@ export async function getPost(slug: string): Promise<ApolloQueryResult<{ post: P
   });
 }
 
-export async function createPost(post: Pick<Post, "title" | "slug" | "content">) {
+export async function createPost(post: Pick<Post, "title" | "slug" | "content" | "userId">) {
   return await graphqlClient.mutate({
     mutation: gql`
       mutation($post: PostInput!) {

@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-  
+import bcrypt from "bcryptjs";
+
 const prisma = new PrismaClient();
 
 seed()
@@ -12,19 +13,28 @@ seed()
   });
 
 async function seed() {
-  const email = "rachel@remix.run";
+  const email = "jaime.cervantes.ve@gmail.com";
+  const hashedPassword = await bcrypt.hash("jaime-pw-blog", 10);
 
-  // cleanup the existing database
-  await prisma.user.delete({ where: { email } }).catch(() => {
-    // no worries if it doesn't exist yet
+  await prisma.user.deleteMany();
+  await prisma.post.deleteMany();
+
+  const user = await prisma.user.create({
+    data: {
+      email,
+      password: {
+        create: {
+          hash: hashedPassword,
+        },
+      },
+    },
   });
-
-  seedPosts();
+  seedPosts(user.id);
 
   console.log(`Database has been seeded. 🌱`);
 }
 
-async function seedPosts() {
+async function seedPosts(userId: string) {
   const posts = [
     {
       slug: "my-first-post",
@@ -34,11 +44,12 @@ async function seedPosts() {
         
         Isn't it great?
             `.trim(),
-          },
-          {
-            slug: "90s-mixtape",
-            title: "A Mixtape I Made Just For You",
-            content: `
+      userId,
+    },
+    {
+      slug: "90s-mixtape",
+      title: "A Mixtape I Made Just For You",
+      content: `
         # 90s Mixtape
         
         - I wish (Skee-Lo)
@@ -59,9 +70,10 @@ async function seedPosts() {
         - Santa Monica (Everclear)
         - C'mon N' Ride it (Quad City DJ's)
       `.trim(),
+      userId,
     },
   ];
-  
+
   for (const post of posts) {
     await prisma.post.upsert({
       where: { slug: post.slug },

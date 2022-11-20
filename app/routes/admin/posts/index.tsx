@@ -31,12 +31,12 @@ export default function Posts() {
 
   return (
     <main>
-      <h1>Posts</h1>
+      <h2>Publicaciones</h2>
       <ul>
         {posts.map(post => (
           <li key={post.slug}>
             <Link
-              to={post.slug}
+              to={`../../${post.slug}`}
               className="text-blue-600 underline"
             >
               {post.title}
@@ -44,9 +44,6 @@ export default function Posts() {
           </li>
         ))}
       </ul>
-      <Link to="admin" className="text-red-600 underline">
-        Admin
-      </Link>
     </main>
   );
 }

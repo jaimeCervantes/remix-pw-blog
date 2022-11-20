@@ -2,6 +2,7 @@ import { redirect, json } from '@remix-run/node';
 import type { ActionArgs } from "@remix-run/node";
 import { createPost } from "~/models/post.server";
 import { Form, useActionData, useTransition } from "@remix-run/react";
+import { requireUserId } from '~/session.server';
 
 const inputClassName = `w-full rounded border border-gray-500 px-2 py-1 text-lg`;
 
@@ -12,6 +13,7 @@ type ActionData = {
 };
 
 export async function action({ request }: ActionArgs) {
+  const userId = await requireUserId(request);
   const formData = await request.formData();
   
   const title = formData.get('title') as string;
@@ -30,9 +32,9 @@ export async function action({ request }: ActionArgs) {
     return json<ActionData>(errors);
   }
 
-  await createPost({ title, slug, content });
+  await createPost({ title, slug, content, userId });
   
-  return redirect('/posts/admin');
+  return redirect('/admin/posts');
 }
 
 export default function NewPost() {

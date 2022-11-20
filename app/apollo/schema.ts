@@ -5,6 +5,7 @@ export const typeDefs = gql`
     slug: String    
     title: String
     content: String
+    userId: String
     createdAt: String
     updatedAt: String
   }
@@ -18,6 +19,7 @@ export const typeDefs = gql`
     slug: String!
     title: String!
     content: String!
+    userId: String
   }
 
   type Mutation {

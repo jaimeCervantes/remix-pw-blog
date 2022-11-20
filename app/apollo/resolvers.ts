@@ -13,7 +13,7 @@ export const resolvers = {
   Mutation: {
     // parent, args, context, info
     createPost(parent:any, { post }:any) {
-      return prisma.post.create({ data: post  });
+      return prisma.post.create({ data: post });
     }
   }
 }
