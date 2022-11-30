@@ -25,13 +25,13 @@ export default function Nav() {
         {!user && (<>
           <Link
             to="/join"
-            className="rounded-md border bg-white px-2 py-2 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
+            className="rounded-md border bg-white px-4 py-2 mr-4 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50"
           >
             Registrate
           </Link>
           <Link
             to="/login"
-            className="rounded-md bg-blue-500 px-2 py-2 mx-4 font-medium text-white hover:bg-blue-600"
+            className="rounded-md bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-600"
           >
             Iniciar sesión
           </Link>
