@@ -24,7 +24,7 @@ export default function AdminIndex() {
         {posts.map((post: { slug: string, title: string }) => (
           <li key={post.slug}>
             <Link
-              to={`../../${post.slug}`}
+              to={`../posts/${post.slug}`}
               className="text-blue-600 underline"
             >
               {post.title}
