@@ -54,9 +54,9 @@ export default function NewPost() {
 
   return (
     <main className="py-3 px-3">
-      <h1 className="text-3xl mb-4"><strong>Creating:</strong> {title}</h1>
       <div className="grid grid-cols-2 gap-4">
         <Form method="post">
+          <h1 className="text-3xl mb-4"><strong>Creating:</strong> {title}</h1>
           <div className="mb-4">
             <label>
               Post Title:{" "}
@@ -101,7 +101,9 @@ export default function NewPost() {
             </button>
           </div>
         </Form>
-        <section data-testid="preview" dangerouslySetInnerHTML={{ __html: marked(preview) }}>
+        <section >
+          <h1 className="text-3xl mb-4">{title}</h1>
+          <div data-testid="preview" dangerouslySetInnerHTML={{ __html: marked(preview) }}></div>
         </section>
       </div>
     </main>
