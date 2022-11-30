@@ -12,11 +12,11 @@ type LoaderData = {
   html: string
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request, context }) => {
   invariant(params.slug, 'params.slug is required');
   
   const { data: { post } }: ApolloQueryResult<{ post: Post}> = await getPost(params.slug);
-  
+
   invariant(post, `Post not found: ${params.slug}`);
   return json<LoaderData>({ post, html: marked(post.content) });
 };

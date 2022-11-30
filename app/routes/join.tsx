@@ -18,25 +18,25 @@ export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
+  const redirectTo = safeRedirect(formData.get("redirectTo"), "/admin");
 
   if (!validateEmail(email)) {
     return json(
-      { errors: { email: "Email is invalid", password: null } },
+      { errors: { email: "El correo electrónico no es valido.", password: null } },
       { status: 400 }
     );
   }
 
   if (typeof password !== "string" || password.length === 0) {
     return json(
-      { errors: { email: null, password: "Password is required" } },
+      { errors: { email: null, password: "La contraseña es obligatoria." } },
       { status: 400 }
     );
   }
 
   if (password.length < 8) {
     return json(
-      { errors: { email: null, password: "Password is too short" } },
+      { errors: { email: null, password: "La contraseña es muy corta." } },
       { status: 400 }
     );
   }
@@ -46,7 +46,7 @@ export async function action({ request }: ActionArgs) {
     return json(
       {
         errors: {
-          email: "A user already exists with this email",
+          email: "Un usuario ya existe con este correo.",
           password: null,
         },
       },
@@ -88,13 +88,14 @@ export default function Join() {
   return (
     <div className="flex min-h-full flex-col justify-center">
       <div className="mx-auto w-full max-w-md px-8">
+        <h1 className="text-xl mb-3">Registro</h1>
         <Form method="post" className="space-y-6">
           <div>
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              Email address
+              Correo electrónico
             </label>
             <div className="mt-1">
               <input
@@ -122,7 +123,7 @@ export default function Join() {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Password
+              Contraseña
             </label>
             <div className="mt-1">
               <input
@@ -148,11 +149,11 @@ export default function Join() {
             type="submit"
             className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
           >
-            Create Account
+            Crear cuenta
           </button>
           <div className="flex items-center justify-center">
             <div className="text-center text-sm text-gray-500">
-              Already have an account?{" "}
+              Ya tienes una cuenta?{" "}
               <Link
                 className="text-blue-500 underline"
                 to={{
@@ -160,7 +161,7 @@ export default function Join() {
                   search: searchParams.toString(),
                 }}
               >
-                Log in
+                Iniciar sesion
               </Link>
             </div>
           </div>
