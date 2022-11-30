@@ -3,7 +3,9 @@ import type { ActionArgs } from "@remix-run/node";
 import { createPost } from "~/models/post.server";
 import { Form, useActionData, useTransition } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
+import { marked } from 'marked';
 import { useState } from 'react';
+import type { ChangeEvent } from 'react';
 
 const inputClassName = `w-full rounded border border-gray-500 px-2 py-1 text-lg`;
 
@@ -43,54 +45,65 @@ export default function NewPost() {
   const transition = useTransition();
   const isCreating = Boolean(transition.submission);
   const [title, setTitle] = useState('');
+  const [preview, setPreview] = useState('');
+
+  function onChangeContent(e: ChangeEvent<HTMLTextAreaElement>) {
+    const content = e.target.value;
+    setPreview(content);
+  }
 
   return (
     <main className="py-3 px-3">
       <h1 className="text-3xl mb-4"><strong>Creating:</strong> {title}</h1>
-      <Form method="post">
-        <div className="mb-4">
-          <label>
-            Post Title:{" "}
-            {errors?.title ? (
-              <em className="text-red-600">{errors.title}</em>
-            ) : null}
-            <input type="text" name="title" className={inputClassName} onChange={(e) => setTitle(e.target.value)} />
-          </label>
-        </div>
-        <div className="mb-4">
-          <label>
-            Post Slug:{" "}
-            {errors?.slug ? (
-              <em className="text-red-600">{errors.slug}</em>
-            ) : null}
-            <input type="text" name="slug" className={inputClassName} />
-          </label>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="content">
-            Markdown:
-            {errors?.content ? (
-              <em className="text-red-600">{errors.content}</em>
-            ) : null}
-          </label>
-          <br />
-          <textarea
-            id="content"
-            rows={20}
-            name="content"
-            className={`${inputClassName} font-mono`}
-          />
-        </div>
-        <div className="text-right">
-          <button
-            type="submit"
-            className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400 disabled:bg-blue-300"
-            disabled={isCreating}
-          >
-            {isCreating ? "Creating..." : "Create Post"}
-          </button>
-        </div>
-      </Form>
+      <div className="grid grid-cols-2 gap-4">
+        <Form method="post">
+          <div className="mb-4">
+            <label>
+              Post Title:{" "}
+              {errors?.title ? (
+                <em className="text-red-600">{errors.title}</em>
+              ) : null}
+              <input type="text" name="title" className={inputClassName} onChange={(e) => setTitle(e.target.value)} />
+            </label>
+          </div>
+          <div className="mb-4">
+            <label>
+              Post Slug:{" "}
+              {errors?.slug ? (
+                <em className="text-red-600">{errors.slug}</em>
+              ) : null}
+              <input type="text" name="slug" className={inputClassName} />
+            </label>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="content">
+              Markdown:
+              {errors?.content ? (
+                <em className="text-red-600">{errors.content}</em>
+              ) : null}
+            </label>
+            <br />
+            <textarea
+              id="content"
+              rows={20}
+              name="content"
+              className={`${inputClassName} font-mono`}
+              onChange={onChangeContent}
+            />
+          </div>
+          <div className="text-right">
+            <button
+              type="submit"
+              className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400 disabled:bg-blue-300"
+              disabled={isCreating}
+            >
+              {isCreating ? "Creating..." : "Create Post"}
+            </button>
+          </div>
+        </Form>
+        <section data-testid="preview" dangerouslySetInnerHTML={{ __html: marked(preview) }}>
+        </section>
+      </div>
     </main>
   );
 }

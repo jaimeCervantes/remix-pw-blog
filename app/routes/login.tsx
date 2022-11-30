@@ -117,7 +117,7 @@ export default function LoginPage() {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Password
+              Contraseña
             </label>
             <div className="mt-1">
               <input
@@ -143,7 +143,7 @@ export default function LoginPage() {
             type="submit"
             className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
           >
-            Iniciar sesion
+            Iniciar sesión
           </button>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
