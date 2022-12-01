@@ -1,25 +1,28 @@
-import { json } from '@remix-run/node';
-import { useLoaderData, useParams } from '@remix-run/react';
-import type { LoaderFunction } from '@remix-run/node';
-import { getPost } from '~/models/post.server';
-import type { Post } from '~/models/post';
-import invariant from 'tiny-invariant';
-import { marked } from 'marked';
-import type { ApolloQueryResult } from '@apollo/client';
+import { json } from "@remix-run/node";
+import { useLoaderData, useParams } from "@remix-run/react";
+import type { LoaderFunction } from "@remix-run/node";
+import { getPost } from "~/models/post.server";
+import type { Post } from "~/models/post";
+import invariant from "tiny-invariant";
+import { marked } from "marked";
+import type { ApolloQueryResult } from "@apollo/client";
 
 type LoaderData = {
-  post: Post,
-  html: string
-}
+  post: Post;
+  html: string;
+};
 
 export const loader: LoaderFunction = async ({ params }) => {
-  invariant(params.slug, 'params.slug is required');
-  
-  const { data: { post } }: ApolloQueryResult<{ post: Post}> = await getPost(params.slug);
-  
+  invariant(params.slug, "params.slug is required");
+
+  const {
+    data: { post },
+  }: ApolloQueryResult<{ post: Post }> = await getPost(params.slug);
+
   if (!post) {
-    throw new Response('Publicación no encontrada', { status: 404 });
+    throw new Response("Publicación no encontrada", { status: 404 });
   }
+
   return json<LoaderData>({ post, html: marked(post.content) });
 };
 
@@ -28,12 +31,8 @@ export function PostSlug() {
 
   return (
     <>
-      <h1 className="my-6 text-center text-3xl">
-       {post.title}
-      </h1>
-        <section dangerouslySetInnerHTML={{ __html: html }}>
-
-        </section>
+      <h1 className="my-6 text-center text-3xl">{post.title}</h1>
+      <section dangerouslySetInnerHTML={{ __html: html }}></section>
     </>
   );
 }

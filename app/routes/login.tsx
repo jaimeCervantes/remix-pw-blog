@@ -22,7 +22,12 @@ export async function action({ request }: ActionArgs) {
 
   if (!validateEmail(email)) {
     return json(
-      { errors: { email: "El correo electrónico no es valido.", password: null } },
+      {
+        errors: {
+          email: "El correo electrónico no es valido.",
+          password: null,
+        },
+      },
       { status: 400 }
     );
   }
@@ -45,7 +50,12 @@ export async function action({ request }: ActionArgs) {
 
   if (!user) {
     return json(
-      { errors: { email: "Correo electrónico o contraseña no valida.", password: null } },
+      {
+        errors: {
+          email: "Correo electrónico o contraseña no valida.",
+          password: null,
+        },
+      },
       { status: 400 }
     );
   }
@@ -82,7 +92,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-full flex-col justify-center">
       <div className="mx-auto w-full max-w-md px-8">
-        <h1 className="text-xl mb-3">Iniciar sesión</h1>
+        <h1 className="mb-3 text-xl">Iniciar sesión</h1>
         <Form method="post" className="space-y-6">
           <div>
             <label

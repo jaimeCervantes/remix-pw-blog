@@ -1,7 +1,7 @@
 export default function Index() {
   return (
     <>
-    <h1>Página index</h1>
+      <h1>Página index</h1>
     </>
   );
 }

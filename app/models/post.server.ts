@@ -1,11 +1,13 @@
-import { graphqlClient } from '~/apollo';
-import { gql } from '@apollo/client';
-import type { ApolloQueryResult } from '@apollo/client';
-import { POST_SLUG_AND_TITLE } from '~/apollo/fragments';
+import { graphqlClient } from "~/apollo";
+import { gql } from "@apollo/client";
+import type { ApolloQueryResult } from "@apollo/client";
+import { POST_SLUG_AND_TITLE } from "~/apollo/fragments";
 
-import type { Post  } from './post';
+import type { Post } from "./post";
 
-export async function getPosts(): Promise<ApolloQueryResult<{ posts: Array<Post>}>> {
+export async function getPosts(): Promise<
+  ApolloQueryResult<{ posts: Array<Post> }>
+> {
   return await graphqlClient.query({
     query: gql`
       query {
@@ -14,15 +16,17 @@ export async function getPosts(): Promise<ApolloQueryResult<{ posts: Array<Post>
           title
         }
       }
-    `
+    `,
   });
 }
 
-export async function getPost(slug: string): Promise<ApolloQueryResult<{ post: Post }>>{
+export async function getPost(
+  slug: string
+): Promise<ApolloQueryResult<{ post: Post }>> {
   return await graphqlClient.query({
     query: gql`
       ${POST_SLUG_AND_TITLE}
-      query($slug: String!) {
+      query ($slug: String!) {
         post: getPost(slug: $slug) {
           ...PostSlugAndTitle
           content
@@ -30,22 +34,23 @@ export async function getPost(slug: string): Promise<ApolloQueryResult<{ post: P
       }
     `,
     variables: {
-      slug
-    }
+      slug,
+    },
   });
 }
 
-export async function createPost(post: Pick<Post, "title" | "slug" | "content" | "userId">) {
+export async function createPost(
+  post: Pick<Post, "title" | "slug" | "content" | "userId">
+) {
   return await graphqlClient.mutate({
     mutation: gql`
-      mutation($post: PostInput!) {
+      mutation ($post: PostInput!) {
         createPost(post: $post) {
           slug
           createdAt
         }
       }
     `,
-    variables: { post }
+    variables: { post },
   });
 }
-

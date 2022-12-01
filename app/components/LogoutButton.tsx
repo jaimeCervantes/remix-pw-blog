@@ -1,6 +1,6 @@
-import { Form } from "@remix-run/react"
+import { Form } from "@remix-run/react";
 
-export default function LogoutButton () {
+export default function LogoutButton() {
   return (
     <Form action="/logout" method="post">
       <button
@@ -10,5 +10,5 @@ export default function LogoutButton () {
         Cerrar sesión
       </button>
     </Form>
-  )
+  );
 }

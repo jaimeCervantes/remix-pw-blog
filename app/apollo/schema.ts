@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const typeDefs = gql`
   type Post {
-    slug: String    
+    slug: String
     title: String
     content: String
     userId: String

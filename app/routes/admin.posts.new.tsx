@@ -3,9 +3,9 @@ import type { ActionArgs } from "@remix-run/node";
 import { createPost } from "~/models/post.server";
 import { Form, useActionData, useTransition } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
-import { marked } from 'marked';
-import { useState } from 'react';
-import type { ChangeEvent } from 'react';
+import { marked } from "marked";
+import { useState } from "react";
+import type { ChangeEvent } from "react";
 
 const inputClassName = `w-full rounded border border-gray-500 px-2 py-1 text-lg`;
 
@@ -44,8 +44,8 @@ export default function NewPost() {
   const errors = useActionData();
   const transition = useTransition();
   const isCreating = Boolean(transition.submission);
-  const [title, setTitle] = useState('');
-  const [preview, setPreview] = useState('');
+  const [title, setTitle] = useState("");
+  const [preview, setPreview] = useState("");
 
   function onChangeContent(e: ChangeEvent<HTMLTextAreaElement>) {
     const content = e.target.value;
@@ -56,14 +56,21 @@ export default function NewPost() {
     <main className="py-3 px-3">
       <div className="grid grid-cols-2 gap-4">
         <Form method="post">
-          <h1 className="text-3xl mb-4"><strong>Creating:</strong> {title}</h1>
+          <h1 className="mb-4 text-3xl">
+            <strong>Creating:</strong> {title}
+          </h1>
           <div className="mb-4">
             <label>
               Post Title:{" "}
               {errors?.title ? (
                 <em className="text-red-600">{errors.title}</em>
               ) : null}
-              <input type="text" name="title" className={inputClassName} onChange={(e) => setTitle(e.target.value)} />
+              <input
+                type="text"
+                name="title"
+                className={inputClassName}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </label>
           </div>
           <div className="mb-4">
@@ -101,9 +108,12 @@ export default function NewPost() {
             </button>
           </div>
         </Form>
-        <section >
-          <h1 className="text-3xl mb-4">{title}</h1>
-          <div data-testid="preview" dangerouslySetInnerHTML={{ __html: marked(preview) }}></div>
+        <section>
+          <h1 className="mb-4 text-3xl">{title}</h1>
+          <div
+            data-testid="preview"
+            dangerouslySetInnerHTML={{ __html: marked(preview) }}
+          ></div>
         </section>
       </div>
     </main>
