@@ -1,41 +1,76 @@
-import { Link } from "@remix-run/react";
+import { Link, useMatches } from "@remix-run/react";
 import { useOptionalUser } from "~/utils";
 import LogoutButton from "~/components/LogoutButton";
+import Logo from "./Logo";
+
+const menuItemClasses = `px-4 py-2 sm:ml-2 flex rounded hover:text-white
+  transition-colors duration-500 hover:bg-primary
+`;
+
+const currentClasses = `text-white bg-secondary dark:bg-transparent
+  dark:bg-gradient-to-bl dark:from-secondary dark:to-transparent
+`;
 
 export default function Nav() {
   const user = useOptionalUser();
-
+  const matches = useMatches();
+  const last = matches[matches.length - 1];
+  const current = last.pathname;
+  
   return (
-    <nav className="flex items-center justify-between border-b border-b-slate-300 px-3 py-4">
-      <div>
-        <Link
-          to="/javascript"
-          className="pl-0 pr-4 text-xl text-blue-600 underline"
-        >
-          Javascript
-        </Link>
-      </div>
+    <nav className="px-3 py-4 flex items-center justify-between flex-wrap gap-y-2">
+      <ul className="flex items-center flex-wrap">
+        <li key="home_0">
+          <Link className="flex mr-4 transition-transform hover:scale-110 active:rotate-[360deg]"
+            to="/"
+          >
+            <Logo />
+          </Link>
+        </li>
+        {
+          [
+            { to: '/javascript', content: 'Javascript' },
+            { to: '/agilidad', content: 'Agilidad' },
+            { to: '/componentes-web', content: 'Componentes web' },
+            { to: '/contacto', content: 'Contacto' },
+          ].map(({ to, content }, index) => {
+            return (
+              <li key={`${to}_${index}`}>
+                <Link className={`${menuItemClasses} ${current === to ? currentClasses : ''}`}
+                  to={to}
+                >
+                  {content}
+                </Link>
+              </li>
+            );
+          })
+        }
+      </ul>
 
-      <div className="flex">
+      <ul className="flex">
         {user && <LogoutButton />}
 
         {!user && (
           <>
-            <Link
-              to="/join"
-              className="mr-4 rounded-md border bg-white px-4 py-2 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50"
-            >
-              Registrate
-            </Link>
-            <Link
-              to="/login"
-              className="rounded-md bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-600"
-            >
-              Iniciar sesión
-            </Link>
+            <li>
+              <Link
+                to="/join"
+                className="block mr-4 rounded-md border bg-white px-4 py-2 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50"
+                >
+                Registrate
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/login"
+                className="block rounded-md bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-600"
+                >
+                Iniciar sesión
+              </Link>
+            </li>
           </>
         )}
-      </div>
+      </ul>
     </nav>
   );
 }
