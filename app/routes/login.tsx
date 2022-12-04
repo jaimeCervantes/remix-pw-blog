@@ -2,6 +2,7 @@ import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
+import { XcircleSolidIcon } from '~/components/Icons';
 
 import { createUserSession, getUserId } from "~/session.server";
 import { verifyLogin } from "~/models/user.server";
@@ -74,6 +75,9 @@ export const meta: MetaFunction = () => {
   };
 };
 
+const inputClassName = 'w-full rounded border border-gray-500 px-2 py-1 text-lg dark:text-black';
+const errorClassName = 'pt-1 flex items-center gap-1 text-red-700 dark:text-red-400';
+
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/admin";
@@ -97,7 +101,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium"
             >
               Correo electrónico
             </label>
@@ -112,11 +116,11 @@ export default function LoginPage() {
                 autoComplete="email"
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby="email-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+                className={inputClassName}
               />
               {actionData?.errors?.email && (
-                <div className="pt-1 text-red-700" id="email-error">
-                  {actionData.errors.email}
+                <div className={errorClassName} id="email-error">
+                  <XcircleSolidIcon />{actionData.errors.email}
                 </div>
               )}
             </div>
@@ -125,7 +129,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium"
             >
               Contraseña
             </label>
@@ -138,11 +142,11 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby="password-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+                className={inputClassName}
               />
               {actionData?.errors?.password && (
-                <div className="pt-1 text-red-700" id="password-error">
-                  {actionData.errors.password}
+                <div className={errorClassName} id="password-error">
+                  <XcircleSolidIcon /> {actionData.errors.password}
                 </div>
               )}
             </div>
@@ -161,19 +165,19 @@ export default function LoginPage() {
                 id="remember"
                 name="remember"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-300"
               />
               <label
                 htmlFor="remember"
-                className="ml-2 block text-sm text-gray-900"
+                className="ml-2 block text-sm"
               >
                 Recuerdame
               </label>
             </div>
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-sm">
               No tienes cuenta?{" "}
               <Link
-                className="text-blue-500 underline"
+                className="text-blue-400 underline"
                 to={{
                   pathname: "/join",
                   search: searchParams.toString(),
