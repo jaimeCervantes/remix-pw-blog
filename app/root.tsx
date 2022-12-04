@@ -13,6 +13,7 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 
 import Nav from "~/components/Nav";
+import Divider from "./components/Divider";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -37,8 +38,11 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full">
-        <Nav></Nav>
+      <body className="h-full dark:bg-black dark:text-white">
+        <header>
+          <Nav />
+          <Divider />
+        </header>
         <main className="mx-4 my-4">
           <Outlet />
         </main>
