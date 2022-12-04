@@ -4,10 +4,9 @@ import { createPost } from "~/models/post.server";
 import { Form, useActionData, useTransition } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
 import { marked } from "marked";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
-
-const inputClassName = `w-full rounded border border-gray-500 px-2 py-1 text-lg`;
+import { XcircleSolidIcon } from "~/components/Icons";
 
 type ActionData = {
   title: null | string;
@@ -40,12 +39,34 @@ export async function action({ request }: ActionArgs) {
   return redirect("/admin/posts");
 }
 
+const inputClassName = 'w-full rounded border border-gray-500 px-2 py-1 text-lg dark:text-black';
+const errorClassName = 'pt-1 flex items-center gap-1 text-red-700 dark:text-red-400';
+
 export default function NewPost() {
   const errors = useActionData();
   const transition = useTransition();
   const isCreating = Boolean(transition.submission);
   const [title, setTitle] = useState("");
   const [preview, setPreview] = useState("");
+  const titleRef = useRef<HTMLInputElement>(null);
+  const slugRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (errors?.title) {
+      titleRef.current?.focus();
+      return;
+    }
+    
+    if (errors?.slug) {
+      slugRef?.current?.focus();
+      return;
+    }
+
+    if (errors?.content) {
+      contentRef.current?.focus();
+    }
+  }, [errors]);
 
   function onChangeContent(e: ChangeEvent<HTMLTextAreaElement>) {
     const content = e.target.value;
@@ -54,8 +75,8 @@ export default function NewPost() {
 
   return (
     <main className="py-3 px-3">
-      <div className="grid grid-cols-2 gap-4">
-        <Form method="post">
+      <div className="grid grid-cols-12 gap-3">
+        <Form method="post" className="max-md:col-span-12 md:col-span-6">
           <h1 className="mb-4 text-3xl">
             <strong>Creating:</strong> {title}
           </h1>
@@ -63,13 +84,18 @@ export default function NewPost() {
             <label>
               Post Title:{" "}
               {errors?.title ? (
-                <em className="text-red-600">{errors.title}</em>
+                <div className={errorClassName} id="title-error">
+                  <XcircleSolidIcon />{errors.title}
+                </div>
               ) : null}
               <input
                 type="text"
                 name="title"
                 className={inputClassName}
                 onChange={(e) => setTitle(e.target.value)}
+                ref={titleRef}
+                aria-invalid={errors?.title ? true : undefined}
+                aria-describedby="title-error"
               />
             </label>
           </div>
@@ -77,16 +103,26 @@ export default function NewPost() {
             <label>
               Post Slug:{" "}
               {errors?.slug ? (
-                <em className="text-red-600">{errors.slug}</em>
+                <div className={errorClassName} id="slug-error">
+                  <XcircleSolidIcon />{errors.slug}
+                </div>
               ) : null}
-              <input type="text" name="slug" className={inputClassName} />
+              <input
+                type="text"
+                name="slug"
+                className={inputClassName} ref={slugRef}
+                aria-invalid={errors?.slug ? true : undefined}
+                aria-describedby="slug-error"
+              />
             </label>
           </div>
           <div className="mb-4">
             <label htmlFor="content">
-              Markdown:
+              Content in "markdown" format:
               {errors?.content ? (
-                <em className="text-red-600">{errors.content}</em>
+                <div className={errorClassName} id="slug-content">
+                <XcircleSolidIcon />{errors.content}
+              </div>
               ) : null}
             </label>
             <br />
@@ -96,6 +132,9 @@ export default function NewPost() {
               name="content"
               className={`${inputClassName} font-mono`}
               onChange={onChangeContent}
+              ref={contentRef}
+              aria-invalid={errors?.slug ? true : undefined}
+              aria-describedby="content-error"
             />
           </div>
           <div className="text-right">
@@ -108,7 +147,7 @@ export default function NewPost() {
             </button>
           </div>
         </Form>
-        <section>
+        <section className="max-md:col-span-12 md:col-span-6">
           <h1 className="mb-4 text-3xl">{title}</h1>
           <div
             data-testid="preview"
