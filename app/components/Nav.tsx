@@ -8,7 +8,7 @@ const menuItemClasses = `px-4 py-2 sm:ml-2 flex rounded hover:text-white
 `;
 
 const currentClasses = `text-white bg-secondary dark:bg-transparent
-  dark:bg-gradient-to-bl dark:from-secondary dark:to-transparent
+  bg-gradient-to-bl from-secondary to-primary dark:to-transparent
 `;
 
 export default function Nav() {
