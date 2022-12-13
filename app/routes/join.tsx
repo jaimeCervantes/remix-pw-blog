@@ -2,7 +2,7 @@ import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
-import { XcircleSolidIcon } from "~/components/Icons";
+import TextField from "~/components/TextField/TextField";
 
 import { getUserId, createUserSession } from "~/session.server";
 
@@ -76,9 +76,6 @@ export const meta: MetaFunction = () => {
   };
 };
 
-const inputClassName = 'w-full rounded border border-gray-500 px-2 py-1 text-lg dark:text-black';
-const errorClassName = 'pt-1 flex items-center gap-1 text-red-700 dark:text-red-400';
-
 export default function Join() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
@@ -99,59 +96,29 @@ export default function Join() {
       <div className="mx-auto w-full max-w-md px-8">
         <h1 className="mb-3 text-xl">Registro</h1>
         <Form method="post" className="space-y-6">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium"
-            >
-              Correo electrónico
-            </label>
-            <div className="mt-1">
-              <input
-                ref={emailRef}
-                id="email"
-                required
-                autoFocus={true}
-                name="email"
-                type="email"
-                autoComplete="email"
-                aria-invalid={actionData?.errors?.email ? true : undefined}
-                aria-describedby="email-error"
-                className={inputClassName}
-              />
-              {actionData?.errors?.email && (
-                <div className={errorClassName} id="email-error">
-                  <XcircleSolidIcon />{actionData.errors.email}
-                </div>
-              )}
-            </div>
-          </div>
+          <TextField
+            label="Correo electrónico"
+            ref={emailRef}
+            required={true}
+            autoFocus={true}
+            name="email"
+            type="email"
+            autoComplete="email"
+            error={actionData?.errors?.email}
+            isInvalid={actionData?.errors?.email ? true : undefined}
+            aria-describedby="email-error"
+          />
 
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium"
-            >
-              Contraseña
-            </label>
-            <div className="mt-1">
-              <input
-                id="password"
-                ref={passwordRef}
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                aria-invalid={actionData?.errors?.password ? true : undefined}
-                aria-describedby="password-error"
-                className={inputClassName}
-              />
-              {actionData?.errors?.password && (
-                <div className={errorClassName} id="password-error">
-                  <XcircleSolidIcon />{actionData.errors.password}
-                </div>
-              )}
-            </div>
-          </div>
+          <TextField
+            label="contraseña"
+            ref={passwordRef}
+            autoFocus={true}
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            error={actionData?.errors?.password}
+            isInvalid={actionData?.errors?.password ? true : undefined}
+          />
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
