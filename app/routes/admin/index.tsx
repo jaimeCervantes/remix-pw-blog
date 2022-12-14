@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useCatch } from "@remix-run/react";
 import { getPosts } from "~/models/post.server";
 
 import type { ApolloQueryResult } from "@apollo/client";
@@ -22,18 +22,47 @@ export default function AdminIndex() {
   return (
     <>
       <h2>Publicaciones</h2>
-      <ul>
-        {posts.map((post: { slug: string; title: string }) => (
-          <li key={post.slug}>
-            <Link
-              to={`../posts/${post.slug}`}
-              className="text-blue-600 underline"
+      <section
+        data-testid="post-list"
+        className="grid grid-cols-mainList gap-4"
+      >
+        {posts.map((item: Post) => (
+          <Link to={`../posts/${item.slug}`} key={item.slug} className="block">
+            <article
+              data-testid="post-item"
+              className="gradient-border-primary gradient-border-primary-br h-[100%] break-words shadow dark:shadow-none"
             >
-              {post.title}
-            </Link>
-          </li>
+              <div className="p-3">
+                <h4>{item.title}</h4>
+              </div>
+            </article>
+          </Link>
         ))}
-      </ul>
+      </section>
+    </>
+  );
+}
+
+export function ErrorBoundary({ error }: any) {
+  return (
+    <>
+      <h1 className="text-3xl">Something went wrong!</h1>
+      <section>
+        <p>{error.message}</p>
+        <pre>{error.stack}</pre>
+      </section>
+    </>
+  );
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  return (
+    <>
+      <h1 className="text-9xl">{caught.status}</h1>
+      <h2 className="text-3xl">Ocurrio un error</h2>
+      <p>{caught.data}</p>
     </>
   );
 }

@@ -1,7 +1,7 @@
 export default function Divider() {
   return (
-    <div className="bg-gradient-to-r from-primary via-secondary to-tertiary" style={{
-        height: "5px",
-    }}></div>
+    <div
+      className="bg-gradient-to-r from-primary via-secondary to-tertiary h-[5px]"
+    ></div>
   );
 }

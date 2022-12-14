@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { useLoaderData, useParams } from "@remix-run/react";
+import { useCatch, useLoaderData, useParams } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/node";
 import { getPost } from "~/models/post.server";
 import type { Post } from "~/models/post";
@@ -31,7 +31,7 @@ export function PostSlug() {
 
   return (
     <>
-      <h1 className="my-6 text-center text-3xl">{post.title}</h1>
+      <h1 className="text-center">{post.title}</h1>
       <section dangerouslySetInnerHTML={{ __html: html }}></section>
     </>
   );
@@ -51,10 +51,11 @@ export function ErrorBoundary({ error }: any) {
 
 export function CatchBoundary() {
   const params = useParams();
+  const caught = useCatch();
 
   return (
     <>
-      <h1 className="text-9xl">404</h1>
+      <h1 className="text-9xl">{caught.status}</h1>
       <h2 className="text-3xl">Publicación "{params.slug}" no existe.</h2>
     </>
   );

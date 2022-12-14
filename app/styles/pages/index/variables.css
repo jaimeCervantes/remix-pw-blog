@@ -1,0 +1,29 @@
+html {
+  --pw-text-color: black;
+  --pw-text-size: 16px;
+  --pw-bg-color: white;
+  --pw-bg-edge-color: #4158D0;
+  --pw-bg-edge: linear-gradient(45deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  --pw-button-deep-bg: linear-gradient(45deg, #4158D0 0%, #C850C0 100%);
+  --pw-button-bg-shadow: linear-gradient(45deg, #4158D0 0%, #C850C0 100%);
+  --pw-spacing: 1rem;
+  --pw-inner-spacing: 1rem;
+  
+  /* code editor representation */
+  --pw-code-color: white;
+  --pw-code-size: 14px;
+  --pw-code-line-height: 1.4;
+  --pw-code-spacing: 0.5rem;
+  --pw-code-editor-radius-width: 5px;
+  --pw-code-editor-border: none;
+  --pw-code-editor-bg-title-bar: linear-gradient(45deg, rgb(0, 140, 255), rgb(184, 153, 255) 70%);
+}
+
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --pw-bg-color: black;
+    --pw-text-color: white;
+    --pw-code-editor-border: 1px solid rgba(128, 128, 128, 0.342);
+  }
+}

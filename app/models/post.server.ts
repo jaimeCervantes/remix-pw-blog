@@ -10,10 +10,10 @@ export async function getPosts(): Promise<
 > {
   return await graphqlClient.query({
     query: gql`
+      ${POST_SLUG_AND_TITLE}
       query {
         posts: getPosts {
-          slug
-          title
+          ...PostSlugAndTitle
         }
       }
     `,

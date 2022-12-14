@@ -77,8 +77,8 @@ export default function NewPost() {
     <main className="py-3 px-3">
       <div className="grid grid-cols-12 gap-3">
         <Form method="post" className="max-md:col-span-12 md:col-span-6">
-          <h1 className="mb-4 text-3xl">
-            <strong>Creating:</strong> {title}
+          <h1 className="mb-4">
+            Creating:
           </h1>
           <div className="mb-4">
             <label>
@@ -148,7 +148,7 @@ export default function NewPost() {
           </div>
         </Form>
         <section className="max-md:col-span-12 md:col-span-6">
-          <h1 className="mb-4 text-3xl">{title}</h1>
+          <h1 className="mb-4">{title}</h1>
           <div
             data-testid="preview"
             dangerouslySetInnerHTML={{ __html: marked(preview) }}
