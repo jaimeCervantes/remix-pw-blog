@@ -7,6 +7,7 @@ import { marked } from "marked";
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { XcircleSolidIcon } from "~/components/Icons";
+import TextField from "~/components/TextField/TextField";
 
 type ActionData = {
   title: null | string;
@@ -39,8 +40,10 @@ export async function action({ request }: ActionArgs) {
   return redirect("/admin/posts");
 }
 
-const inputClassName = 'w-full rounded border border-gray-500 px-2 py-1 text-lg dark:text-black';
-const errorClassName = 'pt-1 flex items-center gap-1 text-red-700 dark:text-red-400';
+const inputClassName =
+  "w-full rounded border border-gray-500 px-2 py-1 text-lg dark:text-black";
+const errorClassName =
+  "pt-1 flex items-center gap-1 text-red-700 dark:text-red-400";
 
 export default function NewPost() {
   const errors = useActionData();
@@ -57,7 +60,7 @@ export default function NewPost() {
       titleRef.current?.focus();
       return;
     }
-    
+
     if (errors?.slug) {
       slugRef?.current?.focus();
       return;
@@ -77,52 +80,45 @@ export default function NewPost() {
     <main className="py-3 px-3">
       <div className="grid grid-cols-12 gap-3">
         <Form method="post" className="max-md:col-span-12 md:col-span-6">
-          <h1 className="mb-4">
-            Creating:
-          </h1>
-          <div className="mb-4">
-            <label>
-              Post Title:{" "}
-              {errors?.title ? (
-                <div className={errorClassName} id="title-error">
-                  <XcircleSolidIcon />{errors.title}
-                </div>
-              ) : null}
-              <input
-                type="text"
-                name="title"
-                className={inputClassName}
-                onChange={(e) => setTitle(e.target.value)}
-                ref={titleRef}
-                aria-invalid={errors?.title ? true : undefined}
-                aria-describedby="title-error"
-              />
-            </label>
-          </div>
-          <div className="mb-4">
-            <label>
-              Post Slug:{" "}
-              {errors?.slug ? (
-                <div className={errorClassName} id="slug-error">
-                  <XcircleSolidIcon />{errors.slug}
-                </div>
-              ) : null}
-              <input
-                type="text"
-                name="slug"
-                className={inputClassName} ref={slugRef}
-                aria-invalid={errors?.slug ? true : undefined}
-                aria-describedby="slug-error"
-              />
-            </label>
-          </div>
+          <h1 className="mb-4">Creating:</h1>
+
+          <TextField
+            label="Post Title: "
+            ref={titleRef}
+            required={true}
+            autoFocus={true}
+            name="title"
+            value={title}
+            type="text"
+            autoComplete="title"
+            error={errors?.title}
+            isInvalid={errors?.title ? true : undefined}
+            aria-describedby="title-error"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setTitle(e.target.value)
+            }
+          />
+
+          <TextField
+            label="Post Slug: "
+            required={true}
+            autoFocus={true}
+            name="slug"
+            type="text"
+            autoComplete="slug"
+            error={errors?.slug}
+            isInvalid={errors?.slug ? true : undefined}
+            aria-describedby="slug-error"
+          />
+
           <div className="mb-4">
             <label htmlFor="content">
               Content in "markdown" format:
               {errors?.content ? (
                 <div className={errorClassName} id="slug-content">
-                <XcircleSolidIcon />{errors.content}
-              </div>
+                  <XcircleSolidIcon />
+                  {errors.content}
+                </div>
               ) : null}
             </label>
             <br />

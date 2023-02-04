@@ -17,10 +17,12 @@ function TextField(
     required,
     autoFocus,
     name,
+    value,
     type,
     autoComplete,
     error,
     children,
+    clsN,
     ...moreProps
   }: TextFieldProps,
   ref: ForwardedRef<HTMLInputElement>
@@ -29,7 +31,7 @@ function TextField(
   const ariaId = `${id}-${name}`;
 
   return (
-    <div>
+    <div className={`mb-4 ${clsN}`}>
       {label ? (
         <label htmlFor={id} className="block text-sm font-medium">
           {label}
@@ -42,6 +44,7 @@ function TextField(
         autoFocus={autoFocus}
         name={name}
         type={type}
+        value={value}
         autoComplete={autoComplete}
         aria-invalid={isInvalid}
         aria-describedby={ariaId}
